@@ -27,10 +27,8 @@ public class EstabelecimentoController {
     }
 
     @PutMapping("/{id}")
-    public Estabelecimento update(
-            @PathVariable Long id,
-            @RequestBody Estabelecimento estabelecimento) {
+    public Estabelecimento update(@PathVariable Long id, @RequestBody Estabelecimento estabelecimento, @RequestParam Long proprietarioLogadoId) {
 
-        return estabelecimentoService.update(id, estabelecimento);
+        return estabelecimentoService.update(id, estabelecimento, proprietarioLogadoId);
     }
 }

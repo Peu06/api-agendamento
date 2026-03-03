@@ -23,14 +23,20 @@ public class EstabelecimentoService {
         return estabelecimentoRepository.save(estabelecimento);
     }
 
-    public Estabelecimento update(Long id, Estabelecimento estabelecimentoAtualizado) {
+    public Estabelecimento update(Long id, Estabelecimento estabelecimentoAtualizado, Long proprietarioLogadoId) {
 
         Estabelecimento estabelecimentoExistente = estabelecimentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Estabelecimento não encontrado com id: " + id));
+                .orElseThrow(() -> new RuntimeException(
+                        "Estabelecimento não encontrado com id: " + id));
+
+        if (!estabelecimentoExistente.getProprietario().getId().equals(proprietarioLogadoId)) {
+            throw new RuntimeException("Você não tem permissão para editar este estabelecimento");
+        }
 
         estabelecimentoExistente.setNome(estabelecimentoAtualizado.getNome());
+        estabelecimentoExistente.setProduto(estabelecimentoAtualizado.getProduto());
+        estabelecimentoExistente.setTelefone(estabelecimentoAtualizado.getTelefone());
         estabelecimentoExistente.setEmail(estabelecimentoAtualizado.getEmail());
-        estabelecimentoExistente.setSenha(estabelecimentoAtualizado.getSenha());
         estabelecimentoExistente.setEndereco(estabelecimentoAtualizado.getEndereco());
 
         return estabelecimentoRepository.save(estabelecimentoExistente);
