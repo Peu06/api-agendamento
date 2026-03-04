@@ -1,6 +1,10 @@
 package com.github.peu06.agendamento_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "estabelecimento")
@@ -10,15 +14,36 @@ public class Estabelecimento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String nome;
+
+    @NotBlank
+    @Size(max = 100)
+    @Column(nullable = false, length = 100)
     private String produto;
+
+    @Size(max = 15)
+    @Column(length = 15)
     private String telefone;
+
+    @Size(max = 150)
+    @Column(length = 150, unique = true)
     private String email;
+
+    @NotBlank
+    @Column(nullable = false)
     private String endereco;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "proprietario_id")
+    @JoinColumn(name = "proprietario_id", nullable = false)
     private Proprietario proprietario;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "estabelecimento")
+    private List<Funcionario> funcionarios;
 
     public Estabelecimento(){
     }

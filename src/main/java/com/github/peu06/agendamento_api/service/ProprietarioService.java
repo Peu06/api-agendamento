@@ -27,7 +27,7 @@ public class ProprietarioService {
         proprietarioExistente.setNome(proprietarioAtualizado.getNome());
         proprietarioExistente.setEmail(proprietarioAtualizado.getEmail());
         proprietarioExistente.setSenha(proprietarioAtualizado.getSenha());
-        proprietarioExistente.setdtNascimento(proprietarioAtualizado.getdtNascimento());
+        proprietarioExistente.setDtNascimento(proprietarioAtualizado.getDtNascimento());
         proprietarioExistente.setTelefone(proprietarioAtualizado.getTelefone());
 
         return proprietarioRepository.save(proprietarioExistente);

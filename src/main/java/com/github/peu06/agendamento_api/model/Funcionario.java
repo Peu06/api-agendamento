@@ -2,17 +2,18 @@ package com.github.peu06.agendamento_api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "proprietario")
-public class Proprietario {
+@Table(name = "funcionario")
+public class Funcionario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,30 +33,37 @@ public class Proprietario {
     @Column(nullable = false)
     private String senha;
 
+    @Size(max = 15)
+    @Column(length = 15)
+    private String telefone;
+
+    @Size(max = 11)
+    @Column(length = 11, unique = true)
+    private String cpf;
+
     @Past
     private LocalDate dtNascimento;
 
-    @NotBlank
-    @Size(max = 15)
-    @Column(nullable = false, length = 15)
-    private String telefone;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "proprietario")
-    private List<Estabelecimento> estabelecimentos;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "estabelecimento_id", nullable = false)
+    private Estabelecimento estabelecimento;
 
 
-    public Proprietario(){
+
+    public Funcionario(){
+
     }
 
-    public Proprietario(Long id, String nome, String email, String senha, LocalDate dtNascimento, String telefone, List<Estabelecimento> estabelecimentos) {
+    public Funcionario(Long id, String nome, String email, String senha, String telefone, String cpf, LocalDate dtNascimento, Estabelecimento estabelecimento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.dtNascimento = dtNascimento;
         this.telefone = telefone;
-        this.estabelecimentos = estabelecimentos;
+        this.cpf = cpf;
+        this.dtNascimento = dtNascimento;
+        this.estabelecimento = estabelecimento;
     }
 
     public Long getId() {
@@ -90,14 +98,6 @@ public class Proprietario {
         this.senha = senha;
     }
 
-    public LocalDate getDtNascimento() {
-        return dtNascimento;
-    }
-
-    public void setDtNascimento(LocalDate dtNascimento) {
-        this.dtNascimento = dtNascimento;
-    }
-
     public String getTelefone() {
         return telefone;
     }
@@ -106,11 +106,27 @@ public class Proprietario {
         this.telefone = telefone;
     }
 
-    public List<Estabelecimento> getEstabelecimentos() {
-        return estabelecimentos;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setEstabelecimentos(List<Estabelecimento> estabelecimentos) {
-        this.estabelecimentos = estabelecimentos;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public LocalDate getDtNascimento() {
+        return dtNascimento;
+    }
+
+    public void setDtNascimento(LocalDate dtNascimento) {
+        this.dtNascimento = dtNascimento;
+    }
+
+    public Estabelecimento getEstabelecimento() {
+        return estabelecimento;
+    }
+
+    public void setEstabelecimento(Estabelecimento estabelecimento) {
+        this.estabelecimento = estabelecimento;
     }
 }
