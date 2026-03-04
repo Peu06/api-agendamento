@@ -1,5 +1,6 @@
 package com.github.peu06.agendamento_api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -15,9 +16,10 @@ public class Proprietario {
     private String nome;
     private String email;
     private String senha;
-    private int idade;
+    private String dtNascimento;
     private String telefone;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "proprietario")
     private List<Estabelecimento> estabelecimentos;
 
@@ -25,12 +27,12 @@ public class Proprietario {
     public Proprietario(){
     }
 
-    public Proprietario(Long id, String nome, String email, String senha, int idade, String telefone, List<Estabelecimento> estabelecimentos) {
+    public Proprietario(Long id, String nome, String email, String senha, String dtNascimento, String telefone, List<Estabelecimento> estabelecimentos) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.idade = idade;
+        this.dtNascimento = dtNascimento;
         this.telefone = telefone;
         this.estabelecimentos = estabelecimentos;
     }
@@ -67,12 +69,12 @@ public class Proprietario {
         this.senha = senha;
     }
 
-    public int getIdade() {
-        return idade;
+    public String getdtNascimento() {
+        return dtNascimento;
     }
 
-    public void setIdade(int idade) {
-        this.idade = idade;
+    public void setdtNascimento(String dtNascimento) {
+        this.dtNascimento = dtNascimento;
     }
 
     public String getTelefone() {
