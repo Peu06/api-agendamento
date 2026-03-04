@@ -4,7 +4,7 @@
 
 Este repositório contém uma **API REST desenvolvida com Spring Boot**, criada com o objetivo de **praticar desenvolvimento backend em Java** através da construção de um sistema real de **gestão de agendamentos** (barbearias, clínicas, salões, etc.), utilizando arquitetura em camadas e integração com banco de dados PostgreSQL.
 
-## 🚧É UM PROJETO EM CONSTRUÇÃO, ALGUMAS FUNCIONALIDADES AINDA NÃO ESTÃO FUNCIONANDO.🚧
+### 🚧É UM PROJETO EM CONSTRUÇÃO, ALGUMAS FUNCIONALIDADES AINDA NÃO ESTÃO FUNCIONANDO.🚧
 ---
 
 ## 🛠️ Tecnologias utilizadas
