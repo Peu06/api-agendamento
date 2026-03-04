@@ -53,6 +53,7 @@ Essa organização facilita manutenção, testes e escalabilidade.
 
 As principais entidades do sistema são:
 
+- **Proprietario** → Responsável pelo estabelecimento
 - **Estabelecimento** → Unidade do negócio  
 - **Funcionario** → Profissional vinculado ao estabelecimento  
 - **Servico** → Tipo de atendimento oferecido  
