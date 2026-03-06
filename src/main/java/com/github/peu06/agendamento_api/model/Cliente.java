@@ -48,11 +48,12 @@ public class Cliente {
 
     @JsonIgnore
     @OneToMany(mappedBy = "cliente")
-    private List<Agendamento> agendamento;
+    private List<Agendamento> agendamentos;
 
-    public Cliente(){}
+    public Cliente() {
+    }
 
-    public Cliente(Long id, String nome, String email, String senha, LocalDate dtNascimento, String telefone, String cpf, List<Agendamento> agendamento) {
+    public Cliente(Long id, String nome, String email, String senha, LocalDate dtNascimento, String telefone, String cpf, List<Agendamento> agendamentos) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -60,7 +61,7 @@ public class Cliente {
         this.dtNascimento = dtNascimento;
         this.telefone = telefone;
         this.cpf = cpf;
-        this.agendamento = agendamento;
+        this.agendamentos = agendamentos;
     }
 
     public Long getId() {
@@ -119,11 +120,11 @@ public class Cliente {
         this.cpf = cpf;
     }
 
-    public List<Agendamento> getAgendamento() {
-        return agendamento;
+    public List<Agendamento> getAgendamentos() {
+        return agendamentos;
     }
 
-    public void setAgendamento(List<Agendamento> agendamento) {
-        this.agendamento = agendamento;
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
     }
 }

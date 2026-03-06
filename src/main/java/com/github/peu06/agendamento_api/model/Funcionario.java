@@ -50,13 +50,15 @@ public class Funcionario {
     @JoinColumn(name = "estabelecimento_id", nullable = false)
     private Estabelecimento estabelecimento;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "funcionario")
+    private List<Agendamento> agendamentos;
 
-
-    public Funcionario(){
+    public Funcionario() {
 
     }
 
-    public Funcionario(Long id, String nome, String email, String senha, String telefone, String cpf, LocalDate dtNascimento, Estabelecimento estabelecimento) {
+    public Funcionario(Long id, String nome, String email, String senha, String telefone, String cpf, LocalDate dtNascimento, Estabelecimento estabelecimento, List<Agendamento> agendamentos) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -65,6 +67,7 @@ public class Funcionario {
         this.cpf = cpf;
         this.dtNascimento = dtNascimento;
         this.estabelecimento = estabelecimento;
+        this.agendamentos = agendamentos;
     }
 
     public Long getId() {
@@ -129,5 +132,13 @@ public class Funcionario {
 
     public void setEstabelecimento(Estabelecimento estabelecimento) {
         this.estabelecimento = estabelecimento;
+    }
+
+    public List<Agendamento> getAgendamentos() {
+        return agendamentos;
+    }
+
+    public void setAgendamentos(List<Agendamento> agendamentos) {
+        this.agendamentos = agendamentos;
     }
 }
