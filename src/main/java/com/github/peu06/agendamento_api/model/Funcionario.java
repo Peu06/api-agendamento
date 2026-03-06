@@ -30,7 +30,8 @@ public class Funcionario {
     private String email;
 
     @NotBlank
-    @Column(nullable = false)
+    @Size(max = 255)
+    @Column(nullable = false, length = 255)
     private String senha;
 
     @Size(max = 15)

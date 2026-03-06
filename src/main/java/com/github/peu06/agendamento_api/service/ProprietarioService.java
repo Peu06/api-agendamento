@@ -18,6 +18,7 @@ public class ProprietarioService {
     public List<Proprietario> getAll(){ return proprietarioRepository.findAll();}
 
     public Proprietario save(Proprietario proprietario) {
+
         return proprietarioRepository.save(proprietario);
     }
 
@@ -32,6 +33,4 @@ public class ProprietarioService {
 
         return proprietarioRepository.save(proprietarioExistente);
     }
-
-
 }
