@@ -55,7 +55,6 @@ As principais entidades do sistema são:
 - **Proprietario** → Responsável pelo estabelecimento
 - **Estabelecimento** → Unidade do negócio  
 - **Funcionario** → Profissional vinculado ao estabelecimento  
-- **Servico** → Tipo de atendimento oferecido  
 - **Cliente** → Usuário que realiza o agendamento  
 - **Agenda** → Grade de horários do funcionário  
 - **Agendamento** → Registro do atendimento marcado  
