@@ -4,8 +4,12 @@ import com.github.peu06.agendamento_api.model.Agenda;
 import com.github.peu06.agendamento_api.model.Agendamento;
 import com.github.peu06.agendamento_api.repository.AgendaRepository;
 import com.github.peu06.agendamento_api.repository.AgendamentoRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,19 +30,26 @@ public class AgendamentoService {
 
     public Agendamento getById(Long id) {
         return agendamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado com id: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Agendamento não encontrado com id: " + id));
     }
 
+    @Transactional
     public Agendamento save(Agendamento agendamento) {
 
         Agenda agenda = agendaRepository.findById(agendamento.getAgenda().getId())
-                .orElseThrow(() -> new RuntimeException("Agenda não encontrada"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Agenda não encontrada"));
 
-        if (!agenda.getStatus()) {
-            throw new RuntimeException("Este horário já está ocupado");
+        if (agenda.getInicio().isBefore(LocalDateTime.now())){
+            agenda.setStatus(Agenda.Status.HORARIO_PASSADO);
+            agendaRepository.save(agenda);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível agendar horário passado");
         }
 
-        agenda.setStatus(false);
+        if (agenda.getStatus() == Agenda.Status.AGENDADO) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Este horário já está ocupado");
+        }
+
+        agenda.setStatus(Agenda.Status.AGENDADO);
         agendaRepository.save(agenda);
 
         agendamento.setAgenda(agenda);
@@ -49,10 +60,10 @@ public class AgendamentoService {
     public Agendamento update(Long id, Agendamento agendamentoAtualizado, Long clienteLogadoId) {
 
         Agendamento agendamentoExistente = agendamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Agendamento não encontrado"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Agendamento não encontrado"));
 
         if (!agendamentoExistente.getCliente().getId().equals(clienteLogadoId)) {
-            throw new RuntimeException("Você não tem permissão para editar esse agendamento.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Você não tem permissão para editar esse agendamento.");
         }
 
         Long agendaAtualId = agendamentoExistente.getAgenda().getId();
@@ -61,17 +72,17 @@ public class AgendamentoService {
         if (!agendaAtualId.equals(novaAgendaId)) {
 
             Agenda novaAgenda = agendaRepository.findById(novaAgendaId)
-                    .orElseThrow(() -> new RuntimeException("Agenda não encontrada"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.CONFLICT, "Agenda não encontrada"));
 
-            if (!novaAgenda.getStatus()) {
-                throw new RuntimeException("Este horário já está ocupado");
+            if (novaAgenda.getStatus() == Agenda.Status.AGENDADO) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Este horário já está ocupado");
             }
 
             Agenda agendaAntiga = agendamentoExistente.getAgenda();
-            agendaAntiga.setStatus(true);
+            agendaAntiga.setStatus(Agenda.Status.DISPONIVEL);
             agendaRepository.save(agendaAntiga);
 
-            novaAgenda.setStatus(false);
+            novaAgenda.setStatus(Agenda.Status.AGENDADO);
             agendaRepository.save(novaAgenda);
 
             agendamentoExistente.setAgenda(novaAgenda);
@@ -88,7 +99,7 @@ public class AgendamentoService {
         Agendamento agendamento = getById(id);
 
         Agenda agenda = agendamento.getAgenda();
-        agenda.setStatus(true);
+        agenda.setStatus(Agenda.Status.DISPONIVEL);
 
         agendaRepository.save(agenda);
 

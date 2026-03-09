@@ -10,7 +10,6 @@ public class OpenAIConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .addServersItem(new Server().url("https://joni-unhoping-tachistoscopically.ngrok-free.dev"));
+        return new OpenAPI();
     }
 }

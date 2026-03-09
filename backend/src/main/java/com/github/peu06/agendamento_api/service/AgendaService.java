@@ -3,8 +3,11 @@ package com.github.peu06.agendamento_api.service;
 import com.github.peu06.agendamento_api.model.Agenda;
 import com.github.peu06.agendamento_api.model.Estabelecimento;
 import com.github.peu06.agendamento_api.repository.AgendaRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -22,10 +25,18 @@ public class AgendaService {
 
     public Agenda save(Agenda agenda) {
 
+        if (agenda.getInicio().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível definir horário no passado");
+        }
+
         return agendaRepository.save(agenda);
     }
 
     public Agenda update(Long id, Agenda agendaAtualizado, Long funcionarioLogadoId) {
+
+        if (agendaAtualizado.getInicio().isBefore(LocalDateTime.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível definir horário no passado");
+        }
 
         Agenda agendaExistente = agendaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(
@@ -41,8 +52,8 @@ public class AgendaService {
 
         return agendaRepository.save(agendaExistente);
     }
-
-
-
-    public void delete(Long id){agendaRepository.deleteById(id);}
+    
+    public void delete(Long id){
+        agendaRepository.deleteById(id);
+    }
 }

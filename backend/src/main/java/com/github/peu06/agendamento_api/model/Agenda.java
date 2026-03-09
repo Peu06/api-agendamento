@@ -26,8 +26,16 @@ public class Agenda {
     @Column(nullable = false)
     private LocalDateTime fim;
 
+    public enum Status {
+        AGENDADO,
+        DISPONIVEL,
+        HORARIO_PASSADO
+    }
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean status;
+    private Status status;
 
     @NotNull
     @ManyToOne
@@ -41,7 +49,7 @@ public class Agenda {
     public Agenda() {
     }
 
-    public Agenda(Long id, LocalDateTime inicio, LocalDateTime fim, boolean status, Funcionario funcionario, List<Agendamento> agendamentos) {
+    public Agenda(Long id, LocalDateTime inicio, LocalDateTime fim, Status status, Funcionario funcionario, List<Agendamento> agendamentos) {
         this.id = id;
         this.inicio = inicio;
         this.fim = fim;
@@ -74,11 +82,11 @@ public class Agenda {
         this.fim = fim;
     }
 
-    public boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
