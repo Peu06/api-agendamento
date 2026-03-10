@@ -5,6 +5,7 @@ import com.github.peu06.agendamento_api.repository.EstabelecimentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EstabelecimentoService {
@@ -40,6 +41,10 @@ public class EstabelecimentoService {
         estabelecimentoExistente.setEndereco(estabelecimentoAtualizado.getEndereco());
 
         return estabelecimentoRepository.save(estabelecimentoExistente);
+    }
+
+    public Optional<Estabelecimento> getById(Long id) {
+        return estabelecimentoRepository.findById(id);
     }
 
     public void delete(Long id){estabelecimentoRepository.deleteById(id);}

@@ -2,6 +2,7 @@ package com.github.peu06.agendamento_api.controller;
 
 import com.github.peu06.agendamento_api.model.Estabelecimento;
 import com.github.peu06.agendamento_api.service.EstabelecimentoService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,13 @@ public class EstabelecimentoController {
     @GetMapping
     public List<Estabelecimento> getAll() {
         return estabelecimentoService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Estabelecimento> getById(@PathVariable Long id) {
+        return estabelecimentoService.getById(id)
+                .map(est -> ResponseEntity.ok(est))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping

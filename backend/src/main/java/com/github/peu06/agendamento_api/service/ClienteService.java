@@ -35,4 +35,26 @@ public class ClienteService {
 
         return clienteRepository.save(clienteExistente);
     }
+
+    public boolean existsByEmail(String email) {
+        return clienteRepository.existsByEmail(email);
+    }
+
+    public boolean existsByCpf(String cpf) {
+        return clienteRepository.existsByCpf(cpf);
+    }
+
+    public Cliente autenticar(String email, String senha) {
+
+        Cliente cliente = clienteRepository.findByEmail(email);
+        if (cliente == null) {
+            return null;
+        }
+
+        if (cliente.getSenha().equals(senha)) {
+            return cliente;
+        }
+
+        return null;
+}
 }

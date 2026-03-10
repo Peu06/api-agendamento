@@ -1,0 +1,17 @@
+body {
+    background-color: #302e2e !important; /* preto suave */
+    color: #ffffff !important;               /* texto claro */
+}
+
+#form-criar-conta, #form-login {
+    background-color: #504f4f; /* cinza escuro */
+    color: #ffffff;
+    border-color: #0066ff !important;
+}
+
+.tela-formulario {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
