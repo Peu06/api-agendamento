@@ -2,6 +2,7 @@ package com.github.peu06.agendamento_api.service;
 
 import com.github.peu06.agendamento_api.model.Cliente;
 import com.github.peu06.agendamento_api.repository.ClienteRepository;
+import com.github.peu06.agendamento_api.util.PasswordUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,19 +20,37 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-    public Cliente save(Cliente cliente) {
+    public Cliente save(Cliente cliente){
+
+        if(clienteRepository.existsByEmail(cliente.getEmail())){
+            throw new RuntimeException("Email já cadastrado");
+        }
+
+        if(clienteRepository.existsByCpf(cliente.getCpf())){
+            throw new RuntimeException("CPF já cadastrado");
+        }
+
+        String senhaHash = PasswordUtil.hashSenha(cliente.getSenha());
+        cliente.setSenha(senhaHash);
+
         return clienteRepository.save(cliente);
     }
 
     public Cliente update(Long id, Cliente clienteAtualizado) {
-        Cliente clienteExistente = clienteRepository.findById(id) .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id: " + id));
+
+        Cliente clienteExistente = clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado com id: " + id));
 
         clienteExistente.setNome(clienteAtualizado.getNome());
         clienteExistente.setEmail(clienteAtualizado.getEmail());
-        clienteExistente.setSenha(clienteAtualizado.getSenha());
         clienteExistente.setDtNascimento(clienteAtualizado.getDtNascimento());
         clienteExistente.setTelefone(clienteAtualizado.getTelefone());
         clienteExistente.setCpf(clienteAtualizado.getCpf());
+
+        if(clienteAtualizado.getSenha() != null && !clienteAtualizado.getSenha().isEmpty()){
+            String senhaHash = PasswordUtil.hashSenha(clienteAtualizado.getSenha());
+            clienteExistente.setSenha(senhaHash);
+        }
 
         return clienteRepository.save(clienteExistente);
     }
@@ -47,14 +66,17 @@ public class ClienteService {
     public Cliente autenticar(String email, String senha) {
 
         Cliente cliente = clienteRepository.findByEmail(email);
-        if (cliente == null) {
+
+        if(cliente == null){
             return null;
         }
 
-        if (cliente.getSenha().equals(senha)) {
+        boolean senhaValida = PasswordUtil.verificarSenha(senha, cliente.getSenha());
+
+        if(senhaValida){
             return cliente;
         }
 
         return null;
-}
+    }
 }

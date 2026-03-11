@@ -41,7 +41,6 @@ public class AgendamentoService {
 
         if (agenda.getInicio().isBefore(LocalDateTime.now())){
             agenda.setStatus(Agenda.Status.HORARIO_PASSADO);
-            agendaRepository.save(agenda);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Não é possível agendar horário passado");
         }
 
@@ -94,14 +93,18 @@ public class AgendamentoService {
         return agendamentoRepository.save(agendamentoExistente);
     }
 
+    @Transactional
     public void delete(Long id) {
 
         Agendamento agendamento = getById(id);
 
         Agenda agenda = agendamento.getAgenda();
-        agenda.setStatus(Agenda.Status.DISPONIVEL);
 
-        agendaRepository.save(agenda);
+        if (agenda.getInicio().isBefore(LocalDateTime.now().plusHours(1))){
+            throw new RuntimeException("Cancelamento deve ser feito com 1 hora de antecedência");
+        }
+
+        agenda.setStatus(Agenda.Status.DISPONIVEL);
 
         agendamentoRepository.delete(agendamento);
     }
