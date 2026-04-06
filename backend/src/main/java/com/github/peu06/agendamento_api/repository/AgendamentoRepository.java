@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 @Repository
 public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> {
 
-    boolean existsByFuncionarioIdAndInicio(Long funcionarioId, LocalDateTime inicio);
+    boolean existsByFuncionarioIdAndAgendaInicio(Long funcionarioId, LocalDateTime inicio);
 }

@@ -11,7 +11,7 @@ public class Agendamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private enum Status{
+    public enum Status {
         AGENDADO,
         CANCELADO,
         FINALIZADO
@@ -37,10 +37,9 @@ public class Agendamento {
     @JoinColumn(name = "agenda_id", nullable = false)
     private Agenda agenda;
 
-    public Agendamento(){}
+    public Agendamento() {}
 
-    public Agendamento(Long id, Status status, Funcionario funcionario, Cliente cliente, Agenda agenda) {
-        this.id = id;
+    public Agendamento(Status status, Funcionario funcionario, Cliente cliente, Agenda agenda) {
         this.status = status;
         this.funcionario = funcionario;
         this.cliente = cliente;
@@ -49,10 +48,6 @@ public class Agendamento {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Status getStatus() {

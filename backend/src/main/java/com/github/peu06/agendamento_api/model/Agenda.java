@@ -43,27 +43,20 @@ public class Agenda {
     private Funcionario funcionario;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "agenda")
+    @OneToMany(mappedBy = "agenda", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Agendamento> agendamentos;
 
-    public Agenda() {
-    }
+    public Agenda() {}
 
-    public Agenda(Long id, LocalDateTime inicio, LocalDateTime fim, Status status, Funcionario funcionario, List<Agendamento> agendamentos) {
-        this.id = id;
+    public Agenda(LocalDateTime inicio, LocalDateTime fim, Status status, Funcionario funcionario) {
         this.inicio = inicio;
         this.fim = fim;
         this.status = status;
         this.funcionario = funcionario;
-        this.agendamentos = agendamentos;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public LocalDateTime getInicio() {
